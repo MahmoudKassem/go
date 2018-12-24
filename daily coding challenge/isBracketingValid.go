@@ -3,17 +3,13 @@ package main
 import "fmt"
 
 func main() {
-    valid := isBracketingValid("([])[]({})")
-    fmt.Printf("%v -> %v\n", "([])[]({})", valid)
+    fmt.Printf("%v -> %v\n", "([])[]({})", isBracketingValid("([])[]({})"))
 
-    valid = isBracketingValid("([)]")
-    fmt.Printf("%v -> %v\n", "([)]", valid)
+    fmt.Printf("%v -> %v\n", "([)]", isBracketingValid("([)]"))
 
-    valid = isBracketingValid("((()")
-    fmt.Printf("%v -> %v\n", "((()", valid)
+    fmt.Printf("%v -> %v\n", "((()", isBracketingValid("((()"))
 
-    valid = isBracketingValid("")
-    fmt.Printf("%v -> %v\n", "", valid)
+    fmt.Printf("%v -> %v\n", "", isBracketingValid(""))
 }
 
 type stack interface {
@@ -71,7 +67,7 @@ func isBracketingValid(bracketString string) (valid bool) {
         }
     }
 
-    if ! bracketStack.empty() {
+    if !bracketStack.empty() {
         return
     }
 

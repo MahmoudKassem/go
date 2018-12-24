@@ -34,8 +34,7 @@ func main() {
     }
 
     printBinaryTree(binaryTree1, 0)
-    count := countUnivalbinaryTrees(binaryTree1)
-    fmt.Printf(" -> %v\n\n", count)
+    fmt.Printf(" -> %v\n\n", countUnivalbinaryTrees(binaryTree1))
 
     binaryTree2 := &binaryTree{
         value: 1,
@@ -68,8 +67,7 @@ func main() {
     }
 
     printBinaryTree(binaryTree2, 0)
-    count = countUnivalbinaryTrees(binaryTree2)
-    fmt.Printf(" -> %v\n\n", count)
+    fmt.Printf(" -> %v\n\n", countUnivalbinaryTrees(binaryTree2))
 
     binaryTree3 := &binaryTree{
         value: 1,
@@ -98,8 +96,7 @@ func main() {
     }
 
     printBinaryTree(binaryTree3, 0)
-    count = countUnivalbinaryTrees(binaryTree3)
-    fmt.Printf(" -> %v\n\n", count)
+    fmt.Printf(" -> %v\n\n", countUnivalbinaryTrees(binaryTree3))
 }
 
 type binaryTree struct {
@@ -189,5 +186,6 @@ func traverse(binaryTree *binaryTree, traverserMessages chan int) {
     }
 
     traverse(binaryTree.left, traverserMessages)
+
     traverse(binaryTree.right, traverserMessages)
 }

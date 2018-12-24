@@ -163,24 +163,24 @@ func compress(list []interface{}) (compressedList []interface{}) {
 func pack(list []interface{}) (packedList []interface{}) {
     var currentValue interface{}
 
-    consecutiveDuplicatesList := []interface{}{}
+    packedSublist := []interface{}{}
 
     for _, element := range list {
         if currentValue != element {
             currentValue = element
 
-            if myLength(consecutiveDuplicatesList) > 0 {
-                packedList = append(packedList, consecutiveDuplicatesList)
+            if myLength(packedSublist) > 0 {
+                packedList = append(packedList, packedSublist)
             }
 
-            consecutiveDuplicatesList = []interface{}{currentValue}
+            packedSublist = []interface{}{currentValue}
         } else {
-            consecutiveDuplicatesList = append(consecutiveDuplicatesList, element)
+            packedSublist = append(packedSublist, element)
         }
     }
 
-    if myLength(consecutiveDuplicatesList) > 0 {
-        packedList = append(packedList, consecutiveDuplicatesList)
+    if myLength(packedSublist) > 0 {
+        packedList = append(packedList, packedSublist)
     }
 
     return
@@ -189,10 +189,10 @@ func pack(list []interface{}) (packedList []interface{}) {
 func encode(list []interface{}) (encodedList []interface{}) {
     packedList := pack(list)
 
-    for _, consecutiveDuplicatesList := range packedList {
-        consecutiveDuplicatesList := consecutiveDuplicatesList.([]interface{})
+    for _, packedSublist := range packedList {
+        packedSublist := packedSublist.([]interface{})
 
-        encodedList = append(encodedList, []interface{}{myLength(consecutiveDuplicatesList), consecutiveDuplicatesList[0]})
+        encodedList = append(encodedList, []interface{}{myLength(packedSublist), packedSublist[0]})
     }
 
     return

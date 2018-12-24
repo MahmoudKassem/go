@@ -3,14 +3,11 @@ package main
 import "fmt"
 
 func main() {
-    distance := editDistance("kitten", "sitting")
-    fmt.Printf("%v, %v -> %v\n", "kitten", "sitting", distance)
+    fmt.Printf("%v, %v -> %v\n", "kitten", "sitting", editDistance("kitten", "sitting"))
 
-    distance = editDistance("test", "tset")
-    fmt.Printf("%v, %v -> %v\n", "test", "tset", distance)
+    fmt.Printf("%v, %v -> %v\n", "test", "tset", editDistance("test", "tset"))
 
-    distance = editDistance("giraf", "farig")
-    fmt.Printf("%v, %v -> %v\n", "giraf", "farig", distance)
+    fmt.Printf("%v, %v -> %v\n", "giraf", "farig", editDistance("giraf", "farig"))
 }
 
 func editDistance(string1, string2 string) (distance int) {

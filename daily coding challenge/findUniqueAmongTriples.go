@@ -6,14 +6,12 @@ import (
 )
 
 func main() {
-    uniqueElement := findUniqueAmongTriples([]int32{6, 1, 3, 3, 3, 6, 6})
-    fmt.Printf("%v -> %v\n", []int32{6, 1, 3, 3, 3, 6, 6}, uniqueElement)
+    fmt.Printf("%v -> %v\n", []int32{6, 1, 3, 3, 3, 6, 6}, findUniqueAmongTriples([]int32{6, 1, 3, 3, 3, 6, 6}))
 
-    uniqueElement = findUniqueAmongTriples([]int32{13, 19, 13, 13})
-    fmt.Printf("%v -> %v\n", []int32{13, 19, 13, 13}, uniqueElement)
+    fmt.Printf("%v -> %v\n", []int32{13, 19, 13, 13}, findUniqueAmongTriples([]int32{13, 19, 13, 13}))
 
-    uniqueElement = findUniqueAmongTriples([]int32{10, -13, -19, -13, -13, 10, 10})
-    fmt.Printf("%v -> %v\n", []int32{10, -13, -19, -13, -13, 10, 10}, uniqueElement)
+    fmt.Printf("%v -> %v\n", []int32{10, -13, -19, -13, -13, 10, 10},
+        findUniqueAmongTriples([]int32{10, -13, -19, -13, -13, 10, 10}))
 }
 
 func findUniqueAmongTriples(list []int32) (uniqueElement int32) {
