@@ -13,41 +13,41 @@ func main() {
 }
 
 type stack interface {
-    push()
+    push(interface{})
     pop() interface{}
     empty() bool
 }
 
 type runeStack []rune
 
-func (runeStack *runeStack) push(rune rune) {
+func (runeStack *runeStack) push(element interface{}) {
+    rune := element.(rune)
+
     *runeStack = append(*runeStack, rune)
 }
 
-func (runeStack *runeStack) pop() interface{} {
-    runeSlice := *runeStack
-
-    length := len(runeSlice)
+func (runeStack *runeStack) pop() (element interface{}) {
+    length := len(*runeStack)
 
     if length > 0 {
-        rune := runeSlice[length - 1]
+        runSlice := *runeStack
 
-        runeSlice = runeSlice[ : length - 1]
+        element = runSlice[length - 1]
 
-        *runeStack = runeSlice
+        *runeStack = runSlice[ : length - 1]
 
-        return rune
+        return
     }
 
-    return nil
+    return
 }
 
-func (runeStack *runeStack)empty() (empty bool) {
+func (runeStack *runeStack) empty() (empty bool) {
     return len(*runeStack) == 0
 }
 
 func isBracketingValid(bracketString string) (valid bool) {
-    bracketStack := runeStack{}
+    bracketStack := new(runeStack)
 
     validBracketPairs := map[rune]rune{
         ')': '(',
