@@ -30,11 +30,9 @@ func (runeStack *runeStack) pop() (element interface{}) {
     length := len(*runeStack)
 
     if length > 0 {
-        runSlice := *runeStack
+        element = (*runeStack)[length - 1]
 
-        element = runSlice[length - 1]
-
-        *runeStack = runSlice[ : length - 1]
+        *runeStack = (*runeStack)[ : length - 1]
 
         return
     }
