@@ -57,9 +57,8 @@ func isBracketingValid(bracketString string) (valid bool) {
         if currentBracket == '(' || currentBracket == '[' || currentBracket == '{' {
             bracketStack.push(currentBracket)
         } else if currentBracket == ')' || currentBracket == ']' || currentBracket == '}' {
-            previousBracket := bracketStack.pop().(rune)
-
-            if previousBracket != validBracketPairs[currentBracket] {
+            previousBracket, foundMatchingPair := bracketStack.pop().(rune)
+            if !foundMatchingPair || previousBracket != validBracketPairs[currentBracket] {
                 return
             }
         }
