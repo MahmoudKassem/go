@@ -68,9 +68,5 @@ func isBracketingValid(bracketString string) (valid bool) {
         }
     }
 
-    if !bracketStack.empty() {
-        return
-    }
-
-    return true
+    return bracketStack.empty()
 }
