@@ -473,15 +473,14 @@ func lotto(amount, maximum int) (lotto []int) {
     }
 
     range_ := range_(1, maximum)
-    rangeList := make([]interface{}, maximum)
-    for index, number := range range_ {
-        rangeList[index] = number
+    rangeList := []interface{}{}
+    for _, head := range range_ {
+        rangeList = append(rangeList, head)
     }
 
     selection := randomSelection(rangeList, amount)
-    lotto = make([]int, amount)
-    for index, selection := range selection {
-        lotto[index] = selection.(int)
+    for _, head := range selection {
+        lotto = append(lotto, head.(int))
     }
 
     return
