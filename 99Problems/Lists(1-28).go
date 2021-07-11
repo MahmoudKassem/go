@@ -160,7 +160,13 @@ func main() {
     fmt.Println("#25 generate a random permutation of the elements of a list")
     fmt.Printf("%v -> %v\n", list1, randomPermutation(list1))
     fmt.Printf("%v -> %v\n", list2, randomPermutation(list2))
-    fmt.Printf("%v -> %v\n", list3, randomPermutation(list3))
+    fmt.Printf("%v -> %v\n\n", list3, randomPermutation(list3))
+
+    fmt.Println("#26 generate the combinations of K distinct objects chosen from the N elements of a list")
+    fmt.Printf("%v, %v -> %v\n", list1, 3, combinations(list1, 3))
+    fmt.Printf("%v, %v -> %v\n", list2, 3, combinations(list2, 3))
+    fmt.Printf("%v, %v -> %v\n", list3, 3, combinations(list3, 3))
+    fmt.Printf("%v, %v -> %v\n", list1, 0, combinations(list1, 0))
 }
 
 func last(list []interface{}) (last interface{}) {
@@ -452,23 +458,23 @@ func range_(minimum, maximum int) (range_ []int) {
     return
 }
 
-func randomSelection(list []interface{}, amount int) (selection []interface{}) {
+func randomSelection(list []interface{}, draws int) (selection []interface{}) {
     var randomElement interface{}
     randomNumberGenerator := rand.New(rand.NewSource(time.Now().UnixNano()))
     length := length(list)
-    for amount > 0 && length > 0 {
+    for draws > 0 && length > 0 {
         randomNumber := randomNumberGenerator.Intn(length) + 1
         list, randomElement = removeAt(list, randomNumber)
         selection = append(selection, randomElement)
         length--
-        amount--
+        draws--
     }
 
     return
 }
 
-func lotto(amount, maximum int) (lotto []int) {
-    if maximum < amount || maximum <= 0 {
+func lotto(draws, maximum int) (lotto []int) {
+    if maximum < draws || maximum <= 0 {
         return
     }
 
@@ -478,7 +484,7 @@ func lotto(amount, maximum int) (lotto []int) {
         rangeList = append(rangeList, head)
     }
 
-    selection := randomSelection(rangeList, amount)
+    selection := randomSelection(rangeList, draws)
     for _, head := range selection {
         lotto = append(lotto, head.(int))
     }
@@ -488,4 +494,25 @@ func lotto(amount, maximum int) (lotto []int) {
 
 func randomPermutation(list []interface{}) (permutation []interface{}) {
     return randomSelection(list, length(list))
+}
+
+func combinations(list []interface{}, draws int) [][]interface{} {
+    if draws <= 0 || length(list) == 0 {
+        return [][]interface{}{{}}
+    }
+
+    head := list[0]
+    tail := list[1:]
+    withHead := [][]interface{}{}
+    for _, combination := range combinations(tail, (draws - 1)) {
+        combination = append([]interface{}{head}, combination...)
+        withHead = append(withHead, combination)
+    }
+
+    if draws <= length(tail) {
+        withoutHead := combinations(tail, draws)
+        return append(withHead, withoutHead...)
+    }
+
+    return withHead
 }
