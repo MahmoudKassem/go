@@ -17,6 +17,7 @@ func main() {
     list8 := []interface{}{"a", "b", []interface{}{"c", []interface{}{"d", "e"}}, "f"}
     list9 := []interface{}{"a", "a", "a", "a", "b", "c", "c", "a", "a", "d", "e", "e", "e", "e"}
     list10 := []interface{}{1, 1, 1, 1, 2, 3, 3, 1, 1, 4, 5, 5, 5, 5}
+    list11 := []int{2, 0, 2}
 
     fmt.Println("#1 last element of a list")
     fmt.Printf("%v -> %v\n", list1, last(list1))
@@ -166,7 +167,12 @@ func main() {
     fmt.Printf("%v, %v -> %v\n", list1, 3, combinations(list1, 3))
     fmt.Printf("%v, %v -> %v\n", list2, 3, combinations(list2, 3))
     fmt.Printf("%v, %v -> %v\n", list3, 3, combinations(list3, 3))
-    fmt.Printf("%v, %v -> %v\n", list1, 0, combinations(list1, 0))
+    fmt.Printf("%v, %v -> %v\n\n", list1, 0, combinations(list1, 0))
+
+    fmt.Println("#27 group the elements of a set into disjoint subsets")
+    fmt.Printf("%v, %v -> %v\n", list1, list11, groups(list1, list11))
+    fmt.Printf("%v, %v -> %v\n", list2, list11, groups(list2, list11))
+    fmt.Printf("%v, %v -> %v\n", list3, list11, groups(list3, list11))
 }
 
 func last(list []interface{}) (last interface{}) {
@@ -473,18 +479,21 @@ func randomSelection(list []interface{}, draws int) (selection []interface{}) {
     return
 }
 
+func convertToList(intList []int) (list []interface{}) {
+    for _, head := range intList {
+        list = append(list, head)
+    }
+
+    return
+}
+
 func lotto(draws, maximum int) (lotto []int) {
     if maximum < draws || maximum <= 0 {
         return
     }
 
     range_ := range_(1, maximum)
-    rangeList := []interface{}{}
-    for _, head := range range_ {
-        rangeList = append(rangeList, head)
-    }
-
-    selection := randomSelection(rangeList, draws)
+    selection := randomSelection(convertToList(range_), draws)
     for _, head := range selection {
         lotto = append(lotto, head.(int))
     }
@@ -496,9 +505,14 @@ func randomPermutation(list []interface{}) (permutation []interface{}) {
     return randomSelection(list, length(list))
 }
 
-func combinations(list []interface{}, draws int) [][]interface{} {
-    if draws <= 0 || length(list) == 0 {
-        return [][]interface{}{{}}
+func combinations(list []interface{}, draws int) (combinations_ [][]interface{}) {
+    if draws <= 0 {
+        combinations_ = append(combinations_, []interface{}{})
+        return
+    }
+
+    if length(list) == 0 {
+        return
     }
 
     head := list[0]
@@ -509,10 +523,44 @@ func combinations(list []interface{}, draws int) [][]interface{} {
         withHead = append(withHead, combination)
     }
 
-    if draws <= length(tail) {
-        withoutHead := combinations(tail, draws)
-        return append(withHead, withoutHead...)
+    withoutHead := combinations(tail, draws)
+    combinations_ = append(withHead, withoutHead...)
+    return
+}
+
+func isElement(list []interface{}, element interface{}) (isElement bool) {
+    for _, head := range list {
+        if element == head {
+            return true
+        }
     }
 
-    return withHead
+    return
+}
+
+func difference(list1, list2 []interface{}) (difference []interface{}) {
+    for _, head := range list1 {
+        if(!isElement(list2, head)) {
+            difference = append(difference, head)
+        }
+    }
+
+    return
+}
+
+func groups(list []interface{}, sizes []int) (groups_ [][][]interface{}){
+    if length(convertToList(sizes)) == 0 {
+        groups_ = append(groups_, [][]interface{}{})
+        return
+    }
+
+    head := sizes[0]
+    tail := sizes[1:]
+    for _, combination := range combinations(list, head) {
+        for _, group := range groups(difference(list, combination), tail) {
+            groups_ = append(groups_, append([][]interface{}{combination}, group...))
+        }
+    }
+
+    return
 }
