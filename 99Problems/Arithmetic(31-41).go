@@ -98,24 +98,24 @@ func primeFactors(number int) (primeFactors []int) {
 func primeFactorsMult(number int) (primeFactorsMult [][2]int) {
     primeFactors := primeFactors(number)
     current := -1
-    replications := 1
+    multiplicity := 1
     for _, head := range primeFactors {
         if current != head {
-            if replications > 1 {
-                primeFactorsMult = append(primeFactorsMult, [2]int{current, replications})
-                replications = 1
+            if multiplicity > 1 {
+                primeFactorsMult = append(primeFactorsMult, [2]int{current, multiplicity})
+                multiplicity = 1
             } else if current != -1 {
                 primeFactorsMult = append(primeFactorsMult, [2]int{current, 1})
             }
 
             current = head
         } else {
-            replications++
+            multiplicity++
         }
     }
 
-    if replications > 1 {
-        primeFactorsMult = append(primeFactorsMult, [2]int{current, replications})
+    if multiplicity > 1 {
+        primeFactorsMult = append(primeFactorsMult, [2]int{current, multiplicity})
     } else if current != -1 {
         primeFactorsMult = append(primeFactorsMult, [2]int{current, 1})
     }
