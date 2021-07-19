@@ -1,9 +1,9 @@
 package main
 
 import (
-    "fmt"
-    "time"
-    "math/rand"
+	"fmt"
+	"math/rand"
+	"time"
 )
 
 func main() {
@@ -18,6 +18,8 @@ func main() {
     list9 := []interface{}{"a", "a", "a", "a", "b", "c", "c", "a", "a", "d", "e", "e", "e", "e"}
     list10 := []interface{}{1, 1, 1, 1, 2, 3, 3, 1, 1, 4, 5, 5, 5, 5}
     list11 := []int{2, 0, 2}
+    list12 := []interface{}{[]interface{}{1, 2, 3}, []interface{}{4, 5}, []interface{}{6, 7, 8}, []interface{}{4, 5}, []interface{}{9, 10, 11, 12}, []interface{}{13, 14}, []interface{}{15}}
+    list13 := []interface{}{[]interface{}{"a", "b", "c"}, []interface{}{"d", "e"}, []interface{}{"f", "g", "h"}, []interface{}{"d", "e"}, []interface{}{"i", "j", "k", "l"}, []interface{}{"m", "n"}, []interface{}{"o"}}
 
     fmt.Println("#1 last element of a list")
     fmt.Printf("%v -> %v\n", list1, last(list1))
@@ -172,7 +174,15 @@ func main() {
     fmt.Println("#27 group the elements of a set into disjoint subsets")
     fmt.Printf("%v, %v -> %v\n", list1, list11, groups(list1, list11))
     fmt.Printf("%v, %v -> %v\n", list2, list11, groups(list2, list11))
-    fmt.Printf("%v, %v -> %v\n", list3, list11, groups(list3, list11))
+    fmt.Printf("%v, %v -> %v\n\n", list3, list11, groups(list3, list11))
+
+    fmt.Println("#28 sorting a list of lists according to length of sublists")
+    fmt.Printf("%v -> %v\n", list12, lsort(list12))
+    fmt.Printf("%v -> %v\n", list13, lsort(list13))
+    fmt.Printf("%v -> %v\n\n", list3, lsort(list3))
+    fmt.Printf("%v -> %v\n", list12, lfsort(list12))
+    fmt.Printf("%v -> %v\n", list13, lfsort(list13))
+    fmt.Printf("%v -> %v\n", list3, lfsort(list3))
 }
 
 func last(list []interface{}) (last interface{}) {
@@ -559,6 +569,85 @@ func groups(list []interface{}, sizes []int) (groups_ [][][]interface{}){
     for _, combination := range combinations(list, head) {
         for _, group := range groups(difference(list, combination), tail) {
             groups_ = append(groups_, append([][]interface{}{combination}, group...))
+        }
+    }
+
+    return
+}
+
+func pivot(sortBy func(a, b interface{}) bool, pivot interface{}, list []interface{}) (less, greaterOrEqual []interface{}) {
+    for _, head := range list {
+        if sortBy(head, pivot) {
+            less = append(less, head)
+        } else {
+            greaterOrEqual = append(greaterOrEqual, head)
+        }
+    }
+
+    return
+}
+
+func sortBy(sortBy_ func(a, b interface{}) bool, list []interface{}) (sorted []interface{}) {
+    if length(list) == 0 {
+        return
+    }
+
+    head := list[0]
+    tail := list[1:]
+    less, greaterOrEqual := pivot(sortBy_, head, tail)
+    sortedLess := sortBy(sortBy_, less)
+    sortedGreaterOrEqual := sortBy(sortBy_, greaterOrEqual)
+    sorted = append(append(sortedLess, head), sortedGreaterOrEqual...)
+    return
+}
+
+func lsort(list []interface{}) (sorted []interface{}) {
+    sorted = sortBy(func(a, b interface{}) bool {
+        listA := a.([]interface{})
+        listB := b.([]interface{})
+        return length(listA) < length(listB)
+    }, list)
+
+    return
+}
+
+func group(groupBy_ func(a, b interface{}) bool, key interface{}, list []interface{}) (group, rest []interface{}) {
+    group = append(group, key)
+    for _, head := range list {
+        if groupBy_(head, key) {
+            group = append(group, head)
+        } else {
+            rest = append(rest, head)
+        }
+    }
+
+    return
+}
+
+func groupBy(groupBy_ func(a, b interface{}) bool, list []interface{}) (grouped []interface{}) {
+    if length(list) == 0 {
+        return
+    }
+
+    head := list[0]
+    tail := list[1:]
+    group, rest := group(groupBy_, head, tail)
+    grouped = append(groupBy(groupBy_, rest), group)
+    return
+}
+
+func lfsort(list []interface{}) (sorted []interface{}) {
+    grouped := groupBy(func(a, b interface{}) bool {
+        listA := a.([]interface{})
+        listB := b.([]interface{})
+        return length(listA) == length(listB)
+    }, list)
+
+    sortedGroups := lsort(reverse(grouped))
+    for _, sortedGroup := range sortedGroups {
+        groupMembers := sortedGroup.([]interface{})
+        for _, groupMember := range groupMembers {
+            sorted = append(sorted, groupMember)
         }
     }
 
