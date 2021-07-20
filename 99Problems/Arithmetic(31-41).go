@@ -188,27 +188,27 @@ func coprime(a, b int) bool {
     return greatestCommonDivisor(a, b) == 1
 }
 
-func totient(number int) (phi int) {
+func totient(number int) (totient int) {
     if number == 1 {
         return 1
     }
 
     for i := 1; i < number; i++ {
         if coprime(number, i) {
-            phi++
+            totient++
         }
     }
 
     return
 }
 
-func totientEfficient(number int) (phi int) {
-    phi = 1
+func totientEfficient(number int) (totient int) {
+    totient = 1
     primeFactorsMult := primeFactorsMult(number)
     for _, primeFactorMult := range primeFactorsMult {
         primeFactor := primeFactorMult[0]
         multiplicity := primeFactorMult[1]
-        phi *= (primeFactor - 1) * int(math.Pow(float64(primeFactor), float64(multiplicity - 1)))
+        totient *= (primeFactor - 1) * int(math.Pow(float64(primeFactor), float64(multiplicity - 1)))
     }
 
     return
