@@ -9,7 +9,7 @@ import (
 func main() {
     fmt.Println("#31 determine whether a given integer number is prime")
     fmt.Printf("%v -> %v\n", 1, isPrime(1))
-    fmt.Printf("%v -> %v\n\n", 315, isPrime(315))
+    fmt.Printf("%v -> %v\n\n", 31, isPrime(31))
 
     fmt.Println("#32 determine the prime factors of a given positive integer")
     fmt.Printf("%v -> %v\n", 1, primeFactors(1))
