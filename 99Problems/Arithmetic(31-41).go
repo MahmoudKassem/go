@@ -51,14 +51,14 @@ func main() {
 
     fmt.Println("#41 compare the two methods of calculating Euler's totient function")
     start := time.Now()
-    simpleImplementation := totient(10090)
+    initialImplementation := totient(10090)
     elapsed := time.Since(start)
-    fmt.Printf("first implementation with %v -> %v took %v\n", 10090, simpleImplementation, elapsed)
+    fmt.Printf("initial implementation with %v -> %v took %v\n", 10090, initialImplementation, elapsed)
 
     start = time.Now()
-    efficientImplementation := totientEfficient(10090)
+    imporvedImplementation := totientEfficient(10090)
     elapsed = time.Since(start)
-    fmt.Printf("efficient implementation with %v -> %v took %v\n", 10090, efficientImplementation, elapsed)
+    fmt.Printf("improved implementation with %v -> %v took %v\n", 10090, imporvedImplementation, elapsed)
 }
 
 func isPrime(number int) (isPrime bool) {
