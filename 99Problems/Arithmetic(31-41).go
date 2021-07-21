@@ -124,7 +124,7 @@ func primeFactorsMult(number int) (primeFactorsMult [][2]int) {
 }
 
 func primeList(start, end int) (primesList []int) {
-    if start < 2 || end < 2 || start > end {
+    if start < 2 && end < 2 || start > end {
         return
     }
 
