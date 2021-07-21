@@ -30,7 +30,7 @@ func main() {
     fmt.Printf("%v -> (%v, %v)\n\n", 256, a, b)
 
     fmt.Println("#36 a list of Goldbach compositions")
-    fmt.Printf("%v, %v -> %v\n", 1, 3, goldbachList(1, 3))
+    fmt.Printf("%v, %v -> %v\n", 1, 4, goldbachList(1, 4))
     fmt.Printf("%v, %v -> %v\n\n", 4, 16, goldbachList(4, 16))
 
     fmt.Println("#37 determine the greatest common divisor of two positive integer numbers")
@@ -140,7 +140,7 @@ func primeList(start, end int) (primesList []int) {
 }
 
 func goldbach(number int) (a, b int) {
-    if number < 3 || number % 2 == 1 {
+    if number < 4 || number % 2 == 1 {
         return
     }
 
@@ -160,17 +160,19 @@ func goldbach(number int) (a, b int) {
 }
 
 func goldbachList(start, end int) (goldbachList [][3]int) {
-    if start < 3 || end < 3 || start > end {
+    if start < 4 && end < 4 || start > end {
+        return
+    }
+
+    if end == 4 {
+        goldbachList = append(goldbachList, [3]int{4, 2, 2})
         return
     }
 
     for start <= end {
-        if start % 2 == 0 {
-            a, b := goldbach(start)
-            goldbachList = append(goldbachList, [3]int{start, a, b})
-        }
-
-        start++
+        a, b := goldbach(start)
+        goldbachList = append(goldbachList, [3]int{start, a, b})
+        start = start + 2
     }
 
     return
